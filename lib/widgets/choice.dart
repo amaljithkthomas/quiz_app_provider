@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quiz_app/data/question_answer.dart';
+import 'package:quiz_app/screens/homescreen.dart';
 import 'package:quiz_app/screens/question_screen.dart';
 
-class Choice extends StatefulWidget {
-  var data;
-
-  Choice({required this.data});
-
-  @override
-  State<Choice> createState() => _ChoiceState();
-}
-
-class _ChoiceState extends State<Choice> {
+class Choice extends StatelessWidget {
+  // var data;
+  //
+  // void getData(BuildContext context)
+  // async {
+  //   try{
+  //     data = await Provider.of<ApiData>(context).getData();
+  //   }catch(e)
+  //   {
+  //     print(e);
+  //   }
+  //
+  // }
   bool choiceSelected = false;
   @override
   Widget build(BuildContext context) {
+    //getData(context);
     List<Widget> choice() {
       List<Widget> choiceWidget = [];
-      for (String answer in widget.data["results"][questionIndex]["incorrect_answers"]) {
+      for (String answer in data["results"][questionIndex]["incorrect_answers"]) {
         var answerWidget = Text(answer);
         //choiceWidget.add(answerWidget);
         var newWidget = Container(
@@ -25,14 +32,14 @@ class _ChoiceState extends State<Choice> {
 
           GestureDetector(
             onTap: (){
-              setState(() {
-                choiceSelected = true;
-              });
+              // setState(() {
+              //   choiceSelected = true;
+              // });
             },
             onLongPress: (){
-              setState(() {
-                choiceSelected = false;
-              });
+              // setState(() {
+              //   choiceSelected = false;
+              // });
             },
             child: Row(
               children: [
@@ -61,14 +68,14 @@ class _ChoiceState extends State<Choice> {
             padding: const EdgeInsets.all(15.0),
             child: GestureDetector(
               onTap: (){
-                setState(() {
-                  choiceSelected = true;
-                });
+                // setState(() {
+                //   choiceSelected = true;
+                // });
               },
               onLongPress: (){
-                setState(() {
-                  choiceSelected = false;
-                });
+                // setState(() {
+                //   choiceSelected = false;
+                // });
               },
               child: Row(
                 children: [
@@ -83,7 +90,7 @@ class _ChoiceState extends State<Choice> {
                     width: 10,
                   ),
                   Text(
-                      '${widget.data["results"][questionIndex]["correct_answer"]}')
+                      '${data["results"][questionIndex]["correct_answer"]}')
                 ],
               ),
             ),

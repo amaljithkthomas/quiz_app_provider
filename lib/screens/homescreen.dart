@@ -2,21 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:quiz_app/data/question_answer.dart';
 
 import 'package:quiz_app/screens/question_screen.dart';
+import 'package:provider/provider.dart';
+var data;
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var data;
 
   Future getApiData() async {
     try {
-      data = await getData();
-      print(data["results"][0]["question"]);
+      data = await Provider.of<ApiData>(context,listen: false).getData();
+      print(data["results"][questionIndex]["question"]);
     } catch (e) {
       print(e);
     }
@@ -30,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //getApiData();
     return Scaffold(
 
       body: SafeArea(
@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (BuildContext ctx) => QuestionScreen(
-                            data: data,
+
                           )));
                 },
                 icon: Text(

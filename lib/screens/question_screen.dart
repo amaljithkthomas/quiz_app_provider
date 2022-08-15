@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quiz_app/data/question_answer.dart';
+import 'package:quiz_app/screens/homescreen.dart';
 import 'package:quiz_app/screens/result_screen.dart';
 import 'package:quiz_app/widgets/choice.dart';
 
+
 int questionIndex = 0;
+bool showResultButton = false;
+class QuestionScreen extends StatelessWidget {
 
-class QuestionScreen extends StatefulWidget {
-  var data;
-
-  QuestionScreen({required this.data});
-
-  @override
-  State<QuestionScreen> createState() => _QuestionScreenState();
-}
-
-class _QuestionScreenState extends State<QuestionScreen> {
-  bool showResultButton = false;
 
   @override
   Widget build(BuildContext context) {
+    //getData(context);
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -42,7 +38,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   height: 20,
                 ),
                 Text(
-                  '${widget.data["results"][questionIndex]["question"]}',
+                  '${data["results"][questionIndex]["question"]}',
                   style: TextStyle(fontSize: 17),
                 ),
                 const SizedBox(
@@ -79,7 +75,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 //     ),
                 //   ),
                 // ),
-                Choice(data: widget.data),
+                Choice(),
                 const SizedBox(
                   height: 40,
                 ),
@@ -88,32 +84,37 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            ElevatedButton(
-                              onPressed: !showResultButton
-                                  ? () {
-                                      int questioNumber =
-                                          widget.data["results"].length;
-                                      setState(() {
-                                        if (questionIndex < questioNumber - 1) {
-                                          questionIndex = questionIndex + 1;
-                                        } else {
-                                          showResultButton = true;
-                                          print(showResultButton);
-                                        }
-                                      });
+                            Consumer<ApiData>(
+                              builder: (context,apiData,Widget?child){
+                                return ElevatedButton(
+                                  onPressed:  () {
+                                    int questioNumber =
+                                        data["results"].length;
 
-                                      print(questionIndex);
+                                    if (questionIndex < questioNumber - 1) {
+                                      apiData.nextQuestion();
+                                      print(data["results"][questionIndex]["question"]);
+                                    } else {
+                                      apiData.resultButton();
+                                      print(showResultButton);
                                     }
-                                  : null,
-                              child: Text(
-                                'Next',
-                                style: TextStyle(color: Colors.blue.shade700),
-                              ),
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      !showResultButton
-                                          ? Colors.orangeAccent
-                                          : Colors.grey)),
+
+
+                                    print(questionIndex);
+                                  },
+
+                                  child: Text(
+                                    'Next',
+                                    style: TextStyle(color: Colors.blue.shade700),
+                                  ),
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all(
+                                          !showResultButton
+                                              ? Colors.orangeAccent
+                                              : Colors.grey)),
+                                );
+                              },
+
                             ),
                           ],
                         ),
@@ -132,7 +133,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                   MaterialPageRoute(
                                     builder: (BuildContext ctx) =>
                                         ResultScreen(
-                                          data: widget.data,
+
                                         ),
                                   ),
                                 );

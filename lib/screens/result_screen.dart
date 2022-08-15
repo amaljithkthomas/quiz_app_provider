@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quiz_app/data/question_answer.dart';
 import 'package:quiz_app/screens/question_screen.dart';
 
-class ResultScreen extends StatefulWidget {
-  var data;
+class ResultScreen extends StatelessWidget {
 
-  ResultScreen({required this.data});
-
-  @override
-  State<ResultScreen> createState() => _ResultScreenState();
-}
-
-class _ResultScreenState extends State<ResultScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,12 +44,10 @@ class _ResultScreenState extends State<ResultScreen> {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (BuildContext ctx) =>
-                        QuestionScreen(data: widget.data),
+                        QuestionScreen(),
                   ),
                 );
-                setState(() {
-                  questionIndex = 0;
-                });
+                Provider.of<ApiData>(context).resetQuestion();
               },
               child: Text(
                 'Retake Trivia',
